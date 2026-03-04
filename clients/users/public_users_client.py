@@ -14,6 +14,9 @@ class CreateUserRequestDict(TypedDict):
 
 
 class PublicUsersClient(ApiClient):
+    """
+    Клиент для работы с /api/v1/users
+    """
     def create_user_api(self, request: CreateUserRequestDict):
         """
         Метод для создания пользователя
