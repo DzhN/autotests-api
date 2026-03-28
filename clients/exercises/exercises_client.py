@@ -135,19 +135,24 @@ class ExercisesClient(ApiClient):
         return self.delete(f"/api/v1/exercises/{exercise_id}")
 
     def get_exercise(self, exercise_id: str) -> GetExerciseResponseDict:
-        return self.get_exercise_api(exercise_id).json()
+        response = self.get_exercise_api(exercise_id)
+        return response.json()
 
     def get_exercises(self, query: GetExercisesQueryDict) -> GetExercisesResponseDict:
-        return self.get_exercises_api(query).json()
+        response = self.get_exercises_api(query)
+        return response.json()
 
     def create_exercise(self, request: CreateExerciseRequestDict) -> CreateExerciseResponseDict:
-        return self.create_exercise_api(request).json()
+        response = self.create_exercise_api(request)
+        return response.json()
 
     def update_exercise(self, exercise_id: str, request: UpdateExerciseRequestDict) -> UpdateExerciseResponseDict:
-        return self.update_exercise_api(exercise_id, request).json()
+        response = self.update_exercise_api(exercise_id, request)
+        return response.json()
 
     def delete_exercise(self, exercise_id: str) -> DeleteExerciseResponse:
-        return self.delete_exercise_api(exercise_id).json()
+        response = self.delete_exercise_api(exercise_id)
+        return response.json()
 
 def get_exercises_client(user: AuthenticationUserDict) -> ExercisesClient:
     """
