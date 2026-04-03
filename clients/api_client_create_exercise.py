@@ -1,20 +1,20 @@
-from clients.courses.courses_client import get_courses_client, CreateCourseRequestDict
-from clients.exercises.exercises_client import get_exercises_client, CreateExerciseRequestDict
-from clients.files.files_client import get_files_client, CreateFileRequestDict
-from clients.private_http_builder import AuthenticationUserDict
-from clients.users.public_users_client import get_public_users_client, CreateUserRequestDict
+from clients.courses.courses_client import get_courses_client, CreateCourseRequestSchema
+from clients.exercises.exercises_client import get_exercises_client, CreateExerciseRequestSchema
+from clients.files.files_client import get_files_client, CreateFileRequestSchema
+from clients.private_http_builder import AuthenticationUserSchema
+from clients.users.public_users_client import get_public_users_client, CreateUserRequestSchema
 from tools.fakers import get_random_email
 
 # Инициализируем клиент PublicUsersClient
 public_users_client = get_public_users_client()
 
 # Инициализируем запрос на создание пользователя
-create_user_request = CreateUserRequestDict(
+create_user_request = CreateUserRequestSchema(
     email=get_random_email(),
     password="string",
-    lastName="string",
-    firstName="string",
-    middleName="string"
+    last_name="string",
+    first_name="string",
+    middle_name="string"
 )
 
 # Отправляем POST запрос на создание пользователя
@@ -22,16 +22,16 @@ create_user_response = public_users_client.create_user(create_user_request)
 print("Create user data:", create_user_response)
 
 # Инициализируем пользовательские данные для аутентификации
-authentication_user = AuthenticationUserDict(
-    email=create_user_request['email'],
-    password=create_user_request['password']
+authentication_user = AuthenticationUserSchema(
+    email=create_user_request.email,
+    password=create_user_request.password
 )
 
 # Инициализируем клиент FilesClient
 files_client = get_files_client(authentication_user)
 
 # Инициализируем запрос на создание файла
-create_file_request = CreateFileRequestDict(
+create_file_request = CreateFileRequestSchema(
     filename="Тестовый файл",
     directory="string",
     upload_file="/Users/nadzhanaev/Downloads/Тестовый файл.txt"
@@ -45,14 +45,14 @@ print("Create file data:", create_file_response)
 create_courses_client = get_courses_client(authentication_user)
 
 # Инициализируем запрос на создание курса
-create_course_request = CreateCourseRequestDict(
+create_course_request = CreateCourseRequestSchema(
     title="Мой курс",
     maxScore=100,
     minScore=0,
     description="Курс о жизни",
     estimatedTime="Длиною в жизнь",
-    previewFileId=create_file_response["file"]["id"],
-    createdByUserId=create_user_response['user']['id']
+    previewFileId=create_file_response.file.id,
+    createdByUserId=create_user_response.user.id
 )
 
 # Отправляем POST запрос на создание курса
@@ -63,9 +63,9 @@ print("Create course data:", create_course_response)
 create_exercises_client = get_exercises_client(authentication_user)
 
 # Инициализируем запрос на создание задания
-create_exercise_request = CreateExerciseRequestDict(
+create_exercise_request = CreateExerciseRequestSchema(
     title="Задание 1",
-    courseId=create_course_response["course"]["id"],
+    courseId=create_course_response.course.id,
     maxScore=100,
     minScore=0,
     orderIndex=1,

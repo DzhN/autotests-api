@@ -1,64 +1,45 @@
 from httpx import Response
 
 from clients.api_client import ApiClient
-from typing import TypedDict
+from clients.authentication.authentication_schema import LoginRequestShema, LoginResponseShema, RefreshRequestShema
 
 from clients.public_http_builder import get_public_http_client
-
-
-class Token(TypedDict):
-    """
-    Описание структуры аутентификационных токенов.
-    """
-    tokenType: str
-    accessToken: str
-    refreshToken: str
-
-class LoginRequestDict(TypedDict):
-    """
-    Описание структуры запроса на аутентификацию.
-    """
-    email: str
-    password: str
-
-class LoginResponseDict(TypedDict):
-    """
-    Описание структуры ответа аутентификации.
-    """
-    token: Token
-
-class RefreshRequestDict(TypedDict):
-    """
-    Описание структуры запроса для обновления токена.
-    """
-    refreshToken: str  # Название ключа совпадает с API
 
 class AuthentificationApiClient(ApiClient):
     """
     Клиент для работы с /api/v1/authentication
     """
 
-    def login_api(self, request: LoginRequestDict) -> Response:
+    def login_api(self, request: LoginRequestShema) -> Response:
         """
         Метод выполняет аутентификацию пользователя.
 
         :param request: Словарь с email и password.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/authentication/login", json=request)
+        return self.post(
+            "/api/v1/authentication/login",
+            # Сериализуем модель в словарь с использованием alias
+            json=request.model_dump(by_alias=True)
+        )
 
-    def refresh_api(self, request: RefreshRequestDict):
+    def refresh_api(self, request: RefreshRequestShema) -> Response:
         """
         Метод обновляет токен авторизации.
 
         :param request: Словарь с refreshToken.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.post("/api/v1/authentication/refresh", json=request)
+        return self.post(
+            "/api/v1/authentication/refresh",
+            # Сериализуем модель в словарь с использованием alias
+            json=request.model_dump(by_alias=True)
+        )
 
-    def login(self, request: LoginRequestDict) -> LoginResponseDict:
-        response = self.login_api(request) # Отправляем запрос на аутентификацию
-        return response.json() # Извлекаем JSON из ответа
+    def login(self, request: LoginRequestShema) -> LoginResponseShema:
+        response = self.login_api(request)
+        # Инициализируем модель через валидацию JSON строки
+        return LoginResponseShema.model_validate_json(response.text)
 
 # Добавляем builder для PublicUsersClient
 def get_authentication_client() -> AuthentificationApiClient:
