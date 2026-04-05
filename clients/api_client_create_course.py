@@ -2,19 +2,12 @@ from clients.courses.courses_client import get_courses_client, CreateCourseReque
 from clients.files.files_client import get_files_client, CreateFileRequestSchema
 from clients.private_http_builder import AuthenticationUserSchema
 from clients.users.public_users_client import get_public_users_client, CreateUserRequestSchema
-from tools.fakers import get_random_email
 
 # Инициализируем клиент PublicUsersClient
 public_users_client = get_public_users_client()
 
 # Инициализируем запрос на создание пользователя
-create_user_request = CreateUserRequestSchema(
-    email=get_random_email(),
-    password="string",
-    last_name="string",
-    first_name="string",
-    middle_name="string"
-)
+create_user_request = CreateUserRequestSchema()
 
 # Отправляем POST запрос на создание пользователя
 create_user_response = public_users_client.create_user(create_user_request)
@@ -31,8 +24,6 @@ files_client = get_files_client(authentication_user)
 
 # Инициализируем запрос на создание файла
 create_file_request = CreateFileRequestSchema(
-    filename="Тестовый файл",
-    directory="string",
     upload_file="/Users/nadzhanaev/Downloads/Тестовый файл.txt"
 )
 
@@ -45,11 +36,6 @@ create_courses_client = get_courses_client(authentication_user)
 
 # Инициализируем запрос на создание курса
 create_course_request = CreateCourseRequestSchema(
-    title="Мой курс",
-    max_score=100,
-    min_score=0,
-    description="Курс о жизни",
-    estimated_time="Длиною в жизнь",
     preview_file_id=create_file_response.file.id,
     created_by_user_id=create_user_response.user.id
 )

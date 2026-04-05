@@ -1,9 +1,9 @@
 import httpx
-from tools.fakers import get_random_email
+from tools.fakers import fake
 
 url = "http://localhost:8000"
 body_create_user = {
-  "email": get_random_email(),
+  "email": fake.email(),
   "password": "string",
   "lastName": "string",
   "firstName": "string",
@@ -30,7 +30,7 @@ headers_update_user = {
   "Authorization": f"Bearer {response_login_data['token']['accessToken']}"
 }
 body_update_user = {
-  "email": get_random_email(),
+  "email": fake.email(),
   "lastName": "string",
   "firstName": "string",
   "middleName": "string"

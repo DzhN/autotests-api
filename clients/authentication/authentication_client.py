@@ -1,7 +1,7 @@
 from httpx import Response
 
 from clients.api_client import ApiClient
-from clients.authentication.authentication_schema import LoginRequestShema, LoginResponseShema, RefreshRequestShema
+from clients.authentication.authentication_schema import LoginRequestSchema, LoginResponseSchema, RefreshRequestSchema
 
 from clients.public_http_builder import get_public_http_client
 
@@ -10,7 +10,7 @@ class AuthentificationApiClient(ApiClient):
     Клиент для работы с /api/v1/authentication
     """
 
-    def login_api(self, request: LoginRequestShema) -> Response:
+    def login_api(self, request: LoginRequestSchema) -> Response:
         """
         Метод выполняет аутентификацию пользователя.
 
@@ -23,7 +23,7 @@ class AuthentificationApiClient(ApiClient):
             json=request.model_dump(by_alias=True)
         )
 
-    def refresh_api(self, request: RefreshRequestShema) -> Response:
+    def refresh_api(self, request: RefreshRequestSchema) -> Response:
         """
         Метод обновляет токен авторизации.
 
@@ -36,10 +36,10 @@ class AuthentificationApiClient(ApiClient):
             json=request.model_dump(by_alias=True)
         )
 
-    def login(self, request: LoginRequestShema) -> LoginResponseShema:
+    def login(self, request: LoginRequestSchema) -> LoginResponseSchema:
         response = self.login_api(request)
         # Инициализируем модель через валидацию JSON строки
-        return LoginResponseShema.model_validate_json(response.text)
+        return LoginResponseSchema.model_validate_json(response.text)
 
 # Добавляем builder для PublicUsersClient
 def get_authentication_client() -> AuthentificationApiClient:
