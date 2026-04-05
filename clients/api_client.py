@@ -15,7 +15,7 @@ class ApiClient:
         """
         self.client = client
 
-    def get(self, url: URL | str, params: QueryParams | None) -> Response:
+    def get(self, url: URL | str, params: QueryParams | None = None) -> Response:
         """
         Выполняет GET-запрос.
 
