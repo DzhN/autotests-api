@@ -1,16 +1,16 @@
 from http import HTTPStatus
 
-from httpcore import request
-
-from clients.api_client_create_exercise import authentication_user
 from clients.authentication.authentication_client import get_authentication_client
 from clients.authentication.authentication_schema import LoginRequestSchema, LoginResponseSchema
 from clients.users.public_users_client import get_public_users_client
 from clients.users.users_schema import CreateUserRequestSchema
 from tools.assertions.authentication import assert_login_response
-from tools.assertions.base import assert_status_code, assert_is_true
+from tools.assertions.base import assert_status_code
+import pytest
 
 
+@pytest.mark.regression
+@pytest.mark.authentication
 def test_login():
     public_user_client = get_public_users_client()
     create_user_request = CreateUserRequestSchema()
