@@ -5,7 +5,7 @@ from clients.authentication.authentication_schema import LoginRequestSchema, Log
 
 from clients.public_http_builder import get_public_http_client
 
-class AuthentificationApiClient(ApiClient):
+class AuthentificationClient(ApiClient):
     """
     Клиент для работы с /api/v1/authentication
     """
@@ -42,10 +42,10 @@ class AuthentificationApiClient(ApiClient):
         return LoginResponseSchema.model_validate_json(response.text)
 
 # Добавляем builder для PublicUsersClient
-def get_authentication_client() -> AuthentificationApiClient:
+def get_authentication_client() -> AuthentificationClient:
     """
     Функция создаёт экземпляр AuthenticationClient с уже настроенным HTTP-клиентом.
 
     :return: Готовый к использованию AuthenticationClient.
     """
-    return AuthentificationApiClient(client=get_public_http_client())
+    return AuthentificationClient(client=get_public_http_client())
