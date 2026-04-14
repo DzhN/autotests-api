@@ -1,18 +1,20 @@
 from http import HTTPStatus
 
+from tools.fakers import fake
+from clients.users.public_users_client import PublicUsersClient
 from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema, GetUserResponseSchema
 from tools.assertions.base import assert_status_code
 from tools.assertions.schema import validate_json_schema
 from tools.assertions.users import assert_create_user_response, assert_get_user_response
 import pytest
 
-
 @pytest.mark.regression
 @pytest.mark.users
-def test_create_user(func_public_user_client):
+@pytest.mark.parametrize("domain", ["mail.ru", "gmail.com", "example.com"])
+def test_create_user(domain: str, public_users_client: PublicUsersClient):
     # Формируем тело запроса на создание пользователя
-    request = CreateUserRequestSchema()
-    response = func_public_user_client.create_user_api(request)
+    request = CreateUserRequestSchema(email=fake.email(domain=domain))
+    response = public_users_client.create_user_api(request)
     # Инициализируем модель ответа на основе полученного JSON в ответе
     # Также благодаря встроенной валидации в Pydantic дополнительно убеждаемся, что ответ корректный
     response_data = CreateUserResponseSchema.model_validate_json(response.text)
