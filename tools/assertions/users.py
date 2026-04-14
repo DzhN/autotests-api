@@ -1,4 +1,5 @@
-from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema, ExtendedUserSchema
+from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema, ExtendedUserSchema, \
+    GetUserResponseSchema
 from tools.assertions.base import assert_equal
 
 
@@ -32,5 +33,5 @@ def assert_user(response_get_user: ExtendedUserSchema, response_create_user: Ext
     assert_equal(response_get_user.middle_name, response_create_user.middle_name, "middle_name")
     assert_equal(response_get_user.id, response_create_user.id, "id")
 
-def assert_get_user_response(get_user_response, create_user_response):
-    assert_user(get_user_response, create_user_response)
+def assert_get_user_response(get_user_response: GetUserResponseSchema, create_user_response: CreateUserResponseSchema):
+    assert_user(get_user_response.user, create_user_response.user)
