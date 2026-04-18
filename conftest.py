@@ -2,6 +2,6 @@ pytest_plugins = (
     "fixtures.users",
     "fixtures.files",
     "fixtures.courses",
-    "fixtures.exercise"
+    "fixtures.exercise",
     "fixtures.authentication"
 )
