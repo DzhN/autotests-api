@@ -8,13 +8,14 @@ from fixtures.users import UserFixture
 from fixtures.users import func_user
 
 class FileFixture(BaseModel):
-    request: ClassVar = CreateFileRequestSchema
-    response: ClassVar = CreateFileResponseSchema
+    request: CreateFileRequestSchema
+    response: CreateFileResponseSchema
 
 
 @pytest.fixture
 def files_client(func_user: UserFixture):
     return get_files_client(func_user.authentication_user)
+
 
 @pytest.fixture
 def func_file(files_client: FilesClient) -> FileFixture:
