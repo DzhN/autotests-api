@@ -1,17 +1,12 @@
-import py_compile
 from http import HTTPStatus
 
 import pytest
-from httpx import delete
 
-from clients.files.files_client import FilesClient
-from clients.files.files_schema import CreateFileRequestSchema, CreateFileResponseSchema, GetFileResponseSchema
+from clients.files.files_schema import GetFileResponseSchema
 from fixtures.files import FileFixture
-from tools.assertions.base import assert_status_code
 from tools.assertions.errors import assert_create_file_with_empty_filename_response, assert_file_not_found_response
 from tools.assertions.files import assert_create_file_response, assert_get_file_response, \
     assert_get_file_with_incorrect_file_id
-from tools.assertions.schema import validate_json_schema
 from clients.errors_schema import ValidationErrorResponseSchema, InternalErrorResponseSchema
 from clients.files.files_client import FilesClient
 from clients.files.files_schema import CreateFileRequestSchema, CreateFileResponseSchema
