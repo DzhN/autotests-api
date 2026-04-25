@@ -1,5 +1,4 @@
 from typing import Any, Sized
-from unicodedata import name
 
 
 def assert_status_code(actual: int, expected: int):

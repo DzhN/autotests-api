@@ -7,9 +7,9 @@ from clients.courses.courses_schema import CreateCourseRequestSchema, CreateCour
 from fixtures.files import FileFixture
 from fixtures.users import UserFixture, func_user
 
-class CoursesFixture(BaseModel):
-    request: ClassVar = CreateCourseRequestSchema
-    response: ClassVar = CreateCourseResponseSchema
+class CourseFixture(BaseModel):
+    request: CreateCourseRequestSchema
+    response: CreateCourseResponseSchema
 
 @pytest.fixture
 def courses_client(func_user: UserFixture) -> CoursesClient:
@@ -20,10 +20,10 @@ def func_course(
         courses_client: CoursesClient,
         func_user: UserFixture,
         func_file:FileFixture
-) -> CoursesFixture:
+) -> CourseFixture:
     request = CreateCourseRequestSchema(
         preview_file_id=func_file.response.file.id,
         created_by_user_id=func_user.response.user.id
     )
     response = courses_client.create_course(request)
-    return CoursesFixture(request=request, response=response)
+    return CourseFixture(request=request, response=response)
