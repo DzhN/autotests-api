@@ -56,8 +56,7 @@ class TestCourses:
     def test_create_course(self,
                          courses_client: CoursesClient,
                          func_user: UserFixture,
-                         func_file: FileFixture,
-                         func_course: CourseFixture):
+                         func_file: FileFixture):
         request = CreateCourseRequestSchema(
             previewFileId=func_file.response.file.id,
             created_by_user_id=func_user.response.user.id
